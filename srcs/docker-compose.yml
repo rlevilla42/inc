@@ -1,0 +1,41 @@
+services:
+  nginx:
+    build: ./requirements/nginx/.
+    container_name: nginx
+    ports:
+      - 443:443
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+  wordpress:
+    depends_on:
+      - mariadb
+    build: ./requirements/wordpress/.
+    container_name: wordpress
+    expose:
+      - 9000
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+    #env_file:
+    # - .env
+  mariadb:
+    build: ./requirements/mariadb/.
+    container_name: mariadb
+    ports:
+      - 3306
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+    env_file:
+      - .env
+
+networks:
+  inception:
+    driver: bridge
