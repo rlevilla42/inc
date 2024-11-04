@@ -28,3 +28,5 @@ SHOW DATABASES;
 SHOW DATABASES LIKE 'db_wordpress';
 SELECT User, Host FROM mysql.user WHERE User = 'buakaw';
 SHOW GRANTS FOR 'buakaw'@'%';
+
+docker exec -it mariadb mysql -u root -p
