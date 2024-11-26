@@ -1,0 +1,67 @@
+services:
+  nginx:
+    build: ./requirements/nginx/.
+    container_name: nginx
+    ports:
+      - 443:443
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+  wordpress:
+    depends_on:
+      - mariadb
+    build: ./requirements/wordpress/.
+    container_name: wordpress
+    expose:
+      - 9000
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+    env_file:
+     - .env
+    #environment:
+    #  - WP_URL=${WP_URL}
+    #  - WP_HOST=${WP_HOST}
+    #  - WP_ADMIN_USER=${WP_ADMIN_USER}
+    #  - WP_BLOG_TITLE=${WP_BLOG_TITLE}
+    #  - WP_ADMIN_PASS=${WP_ADMIN_PASS}
+    #  - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+    #  - WP_USER=${WP_USER}
+    #  - WP_USER_PASS=${WP_USER_PASS}
+    #  - WP_USER_EMAIL=${WP_USER_EMAIL}
+    #environment:
+    #  - WP_URL=rlevilla.42.fr
+    #  - WP_HOST="mariadb"
+    #  - WP_ADMIN_USER=HashiramaSenju
+    #  - WP_BLOG_TITLE=inception
+    #  - WP_ADMIN_PASS=HashiramaSenju
+    #  - WP_ADMIN_EMAIL=rlevilla@student.42.fr
+    #  - WP_USER=buakaw
+    #  - WP_USER_PASS=buakaw
+    #  - WP_USER_EMAIL=sasuke@student.42.fr
+  mariadb:
+    build: ./requirements/mariadb/.
+    container_name: mariadb
+    ports:
+      - 3306
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - ./home/rlevilla/data:/var/www/html
+    env_file:
+      - .env
+    #environment:
+    #  - MYSQL_DB=${MYSQL_DB}
+    #  - MYSQL_USER=${MYSQL_USER}
+    #  - MYSQL_PASS=${MYSQL_PASS}
+    #  - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    #  - MYSQL_HOST=${MYSQL_HOST}
+
+networks:
+  inception:
+    driver: bridge
